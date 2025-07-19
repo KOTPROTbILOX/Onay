@@ -12,19 +12,14 @@
 
     html, body {
       width: 100%;
-      height: 100%;
-      overflow: hidden;
-    }
-
-    body {
-      font-family: sans-serif;
+      min-height: 100%;
+      overflow-x: hidden;
       background: #fff;
-      font-size: 100px;
+      font-family: sans-serif;
     }
 
     .form {
       padding: 20px;
-
     }
 
     input, textarea, button {
@@ -33,54 +28,60 @@
       height: 200px;
     }
 
-    .template {
+    .template-wrapper {
+      display: none;
       position: relative;
-      width: 100vw;
-      height: 100vh;
-      background-image: url('Onay.png');
+      min-height: 100vh;
+      padding-bottom: 120px; /* невидимый запас снизу */
+    }
+
+    .background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('Onay.png'); /* твоя PNG */
       background-size: cover;
       background-position: center;
-      display: none;
+      z-index: 0;
     }
 
     .field {
       position: absolute;
-      color: black;
-      font-size: 20px;
       font-weight: bold;
-      line-height: 1;
+      white-space: nowrap;
+      z-index: 1;
     }
 
     #nameOutput {
-      top: 425px;
-      left: 275px;
-      font-size: 90px;
-      font-style: bolt;
-      color: #070C2B;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    #messageOutput {
-      top: 440px;
-      left: 470px;
-      width: 400px;
-      font-size: 60px;
-      font-style: bolt;
-      color: #070C2B;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    }
-
-    #datetimeOutput {
-  top: 33%;
-  left: 15%;
+  top: 435px;
+  left: 275px;
   font-size: 90px;
-  text-align: center;
-  font-style: bolt;
+  font-weight: bold;
   color: #070C2B;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-  </style>
+#messageOutput {
+  top: 450px;
+  left: 460px;
+  width: 400px;
+  font-size: 60px;
+  font-weight: bold;
+  color: #070C2B;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+#datetimeOutput {
+  top: 33%;
+  left: 7%;
+  font-size: 90px;
+  font-style: bolt;
+  color: #070C2B;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+    </style>
 </head>
 <body>
 
@@ -88,47 +89,43 @@
     <h2>Введите данные</h2>
     <label>Маршрут автобуса:
       <input type="text" id="nameInput">
-    </label>
+    </label><br><br>
     <label>Номер автобуса:
       <textarea id="messageInput"></textarea>
-    </label>
+    </label><br><br>
     <button onclick="showTemplate()">Показать</button>
   </div>
 
-  <div class="template" id="templateBox">
+  <div class="template-wrapper" id="templateBox">
+    <div class="background"></div>
+
     <div class="field" id="nameOutput"></div>
     <div class="field" id="messageOutput"></div>
     <div class="field" id="datetimeOutput"></div>
+
+<div style="height: 300px;"></div>
+
   </div>
-
-  <div style="height: 100px;"></div>
-
 
   <script>
     function showTemplate() {
       const name = document.getElementById('nameInput').value;
       const message = document.getElementById('messageInput').value;
 
-      // Получаем текущую дату и время
-      const now = new Date();
-      const day = String(now.getDate()).padStart(2, '0');
-      const month = String(now.getMonth() + 1).padStart(2, '0');
-      const year = now.getFullYear();
-      const hours = String(now.getHours()).padStart(2, '0');
-      const minutes = String(now.getMinutes()).padStart(2, '0');
-
-      const datetimeString = `${day}.${month}.${year} ${hours}:${minutes-2}`;
-
-      // Устанавливаем текст
       document.getElementById('nameOutput').textContent = name;
       document.getElementById('messageOutput').textContent = message;
-      document.getElementById('datetimeOutput').textContent = datetimeString;
 
-      // Показываем шаблон, скрываем форму
+      const now = new Date();
+      const datetime = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+      document.getElementById('datetimeOutput').textContent = datetime;
+
       document.getElementById('formBox').style.display = 'none';
       document.getElementById('templateBox').style.display = 'block';
     }
   </script>
+
+<div style="height: 300px;"></div>
+
 
 </body>
 </html>
